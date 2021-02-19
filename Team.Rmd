@@ -1,0 +1,141 @@
+---
+title: "Team"
+author: "Shellie Jurchisin and Maddie Egbert"
+date: "2/19/2021"
+output: html_document
+---
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco) 
+
+#1) How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
+
+hist(choco$Rating)
+
+boxplot(choco$Rating ~ choco$Cocoa_Percent)
+
+#Explanation: Based off the histogram above and meaning of the ratings, we can interpret that the ratings range between 1 and 5, and the majority of chocolate bars are rated between 2.5 and 3.5. The boxplot was able to show us that the chocolate bars with the higher ratings had cocao percentages roughly in the 60's and 70's range. We can also see with the boxplot that there were in fact a decent amount of outliers; we can depict the outliers as the circles that are numerically distant from the rest of the data, and are located outside the "whiskers" of the plot.
+
+
+#2) How does the number of ratings depend on the location of the company? Draw a bar chart of the number of reports.
+
+table(choco$Rating, choco$Location)
+barplot(table(choco$Rating, choco$Location))
+f <-table(choco$Location)
+str(f)
+barplot(f)
+   
+#Explanation: Based off the bar chart above, we can see that the number of ratings defintiely depends on the location in the sense that there are a higher number of ratings in the U.K. compared to the locations of India, Nicaragua, Spain, and so on and so forth. Since there are 2312 rows in this dataset, there is a large quantity of locations and countries presented, so the information provided in the bar chart doesn't represent and display all of the information in association to the relationshp between the number of ratings and the locations, but it gives us a good idea of what we wanted our output to show.
+
+
+#3) Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain. [Hint: Think about why the scatterplot is not a very good choice for visualization here.]
+
+- graphical
+
+table(choco$Rating, choco$Cocoa_Percent)
+barplot(table(choco$Rating, choco$Cocoa_Percent))
+p <-table(choco$Cocoa_Percent)
+str(p)
+barplot(p)
+
+- numerical
+
+str(choco)
+summary(choco)
+View(choco)
+sort(choco$Cocoa_Percent)
+best5 <- choco[c(order(choco$Cocoa_Percent, decreasing = TRUE)), c('Rating','Cocoa_Percent')]
+head(best5, 5)
+
+mean(choco$Cocoa_Percent)
+median(choco$Cocoa_Percent)
+quantile(choco$Cocoa_Percent)
+
+mean(choco$Rating)
+median(choco$Rating)
+quantile(choco$Rating)
+
+#Explanation: Based off the graphical summary presented (bar chart), we can cleary see that the cocao percentage of 71 or in the low 70'd had the highest ratings compared to the rest. In contrast, based off of the numerical summaries presented, we can see that the higher cocoa percentages, percentages of 100, returned lower ratings overall.
+
+
+#4) How do different bean origins compare in terms of the flavor of chocolates? Are beans from some places better than the other? Create both numerical and graphical summaries, and explain.
+
+choco$Bean_Origin = as.factor(choco$Bean_Origin)
+choco$Characteristics1 = as.factor(choco$Characteristics1)
+
+- graphical
+
+str(choco$Bean_Origin)
+table(choco$Bean_Orgin, choco$Characteristics1)
+barplot(table(choco$Bean_Orgin, choco$Characteristics1))
+b <-table(choco$Characteristics1)
+str(b)
+barplot(b)
+
+- numerical
+
+summary(choco$Bean_Origin)
+Venezuela = choco[choco$Bean_Origin =="Venezuela",]
+table(Venezuela$Characteristics1)
+head(Venezuela)
+
+summary(choco$Bean_Origin)
+Peru = choco[choco$Bean_Origin =="Peru",]
+table(Peru$Characteristics1)
+head(Peru)
+
+summary(choco$Bean_Origin)
+Ecuador = choco[choco$Bean_Origin =="Ecuador",]
+table(Ecuador$Characteristics1)
+head(Ecuador)
+
+summary(choco$Bean_Origin)
+Dominican.Republic = choco[choco$Bean_Origin =="Dominican Republic",]
+table(Dominican.Republic$Characteristics1)
+head(Dominican.Republic)
+
+#Explanation: Based off of both the graphical and numerical summaries, we can clearly differentiate between how bean origins compare to a variety of flavor's. The bar chart was pretty difficult to read because both variable's are categorical, but I got a very good insight of the data from visualizing the numerical summaries. After defining both categorical variabes using the "as.factor" formula, I was better able to analyze the bean origins and the amount of times each of the orgins appear in the dataset. In order to see better correlation between bean origin and flovor, I took out the top 4 bean orgins and created subsets to see the relation to flavor, and the rating which will tell us if certain bean origins produce "better" chocolate versus others. In respect to orgins with the highest values to lowest values in regard to the top four, I took a closer look at Venezuela, Peru, Ecuador, and the Domincan Republic. For Venezuela, the higher ranked chocolate (rating of 4) had the characteristics of being oily, nut, caramel, and raspberry. For Peru, the higher ranked chocolate (rating of 4) had the characteristics of being sweet, cocoa, tangerine, delicate, hazelnut, and brownie. For Ecuador, the higher ranked chocolate (rating of 4) had the characteristics of strong spice and intense pepper. For the Dominican Republic, the higher ranked chocolate (rating of 3.75) had the characteristics of orange and cinnamon. With all of that being said, it can be inferred that some places do infact produce better beans, we can see this by comparing the ratings between all of the different bean origins, or subsets of specific bean origins.
+
+
+#5) Brainstorm two analyses you would like to perform (with your teammates). Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
+
+Analyses 1: Compare how Date correlates to the overall rating of the chocolate.
+
+- graphical
+
+choco$Date
+head(choco)
+choco$Rating
+plot(choco$Date, choco$Rating)
+plot(choco$Date, choco$Rating, xlab='Date', ylab='Rating', main='Chocolate Data : Date & Rating')
+
+- numerical
+
+str(choco)
+summary(choco)
+View(choco)
+sort(choco$Date)
+best5 <- choco[c(order(choco$Date, decreasing = TRUE)), c('Rating','Date')]
+head(best5, 5)
+
+#Analyses 1 Explanation: After closely analyzing the graphical and numerical summaries, I was clearly able to see correlation between the ratings of chocolate to when it was produced. We can see on the plot that between the years of 2006 and 2020, ratings of 1 to 2.25 slowly disappeared and ratings of 4 became more scarce in year 2019. In 2020, ratings are typically more centered around 3.25 and 3.5.
+
+Analyses 2: Have the cocoa percentages changed overtime due to consumer demand?
+
+- graphical 
+
+choco$Date
+head(choco)
+choco$Cocoa_Percent
+plot(choco$Date, choco$Cocoa_Percent)
+plot(choco$Date, choco$Cocoa_Percent, xlab='Date', ylab='Cocoa Percent', main='Chocolate Data : Date & Cocoa Percent')
+
+- numerical
+
+str(choco)
+summary(choco)
+View(choco)
+sort(choco$Cocoa_Percent)
+best5 <- choco[c(order(choco$Cocoa_Percent, decreasing = TRUE)), c('Date','Cocoa_Percent')]
+head(best5, 5)
+
+#Analyses 2 Explanation: After closely analyzing the graphical and numerical summaries, I was clearly able to see that overtime, cocoa percantages have changed likely due to consumer demand. On the plot, we can see that collectively between 2006 and 2020 cocoa percentage's have slowly increased from the lower 40 range to the mid 60's, and have dropped from the 100 range in 2016 to the 60's and 70's range in 2020. With that being stated, it could be inferred that consumer preferences have changed overtime and has converted them into mainly purchasing chocolate with cocoa percentages at around 70%.
